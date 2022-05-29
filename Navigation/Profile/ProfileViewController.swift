@@ -5,9 +5,12 @@
 //  Created by Артем Свиридов on 04.03.2022.
 //
 import UIKit
+import StorageService
 
 class ProfileViewController: UIViewController {
+
     //MARK: - Properties
+
     private let posts = PostModel.makeMockModel()
     private let profileHeader = ProfileHeaderView()
     private var isAvatarOpen = false
@@ -24,8 +27,10 @@ class ProfileViewController: UIViewController {
 
 
     //MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         customizeView()
         layout()
         setupGesture()
@@ -37,8 +42,13 @@ class ProfileViewController: UIViewController {
     }
 
     //MARK: - Methods
+
     private func customizeView() {
-        view.backgroundColor = .systemBackground
+        #if DEBUG
+            view.backgroundColor = .systemMint
+        #else
+            view.backgroundColor = .systemBackground
+        #endif
     }
 
     private func layout() {
@@ -54,6 +64,7 @@ class ProfileViewController: UIViewController {
 }
 
 //MARK: - UITableViewDelegate
+
 extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         UITableView.automaticDimension
@@ -79,6 +90,7 @@ extension ProfileViewController: UITableViewDelegate {
 }
 
 //MARK: - UITableViewDataSource
+
 extension ProfileViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         2
@@ -102,6 +114,7 @@ extension ProfileViewController: UITableViewDataSource {
 }
 
 //MARK: - Gestures and Animations
+
 extension ProfileViewController {
     private var widthBackView: CGFloat {
         profileHeader.backView.bounds.width
