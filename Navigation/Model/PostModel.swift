@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct PostModel {
-    var author: String
-    var description: String
-    var image: String
-    var likes: Int
-    var views: Int
+public struct PostModel {
+    public var author: String
+    public var description: String
+    public var image: String
+    public var likes: Int
+    public var views: Int
 
-    static func makeMockModel() -> [[PostModel]] {
+    public static func makeMockModel() -> [[PostModel]] {
         var model = [[PostModel]]()
         var section = [PostModel]()
         section.append(PostModel(author: "Memus", description: "infinite SOCIAL CREDIT hack 100% working FREE by Zhong Xina", image: "post1", likes: 34875, views: 742358))
