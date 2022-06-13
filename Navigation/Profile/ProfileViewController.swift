@@ -10,11 +10,17 @@ import SnapKit
 
 class ProfileViewController: UIViewController {
 
-    //MARK: - Properties
+    // MARK: - Private
 
     private let posts = PostModel.makeMockModel()
-    private let profileHeader = ProfileHeaderView()
+
+    // MARK: Variables
+
     private var isAvatarOpen = false
+
+    // MARK: UI
+
+    private let profileHeader = ProfileHeaderView()
 
     private lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
@@ -27,7 +33,7 @@ class ProfileViewController: UIViewController {
     }()
 
 
-    //MARK: - Lifecycle
+    //MARK: - Override functions
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,13 +48,17 @@ class ProfileViewController: UIViewController {
         navigationController?.navigationBar.isHidden = true
     }
 
-    //MARK: - Methods
+}
 
-    private func customizeView() {
+// MARK: - Private functions
+
+private extension ProfileViewController {
+
+    func customizeView() {
         view.backgroundColor = .systemBackground
     }
 
-    private func layout() {
+    func layout() {
         view.addSubview(tableView)
 
         NSLayoutConstraint.activate([
@@ -108,6 +118,18 @@ extension ProfileViewController: UITableViewDataSource {
         } else {
             let postCell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifier, for: indexPath) as! PostTableViewCell
             postCell.setupCell(model: posts[0][indexPath.row])
+            switch indexPath.row {
+            case 0:
+                postCell.setupFilter(.noir)
+            case 1:
+                postCell.setupFilter(.fade)
+            case 2:
+                postCell.setupFilter(.chrome)
+            case 3:
+                postCell.setupFilter(.colorInvert)
+            default:
+                break
+            }
             return postCell
         }
     }
@@ -116,24 +138,24 @@ extension ProfileViewController: UITableViewDataSource {
 
 //MARK: - Gestures and Animations
 
-extension ProfileViewController {
+private extension ProfileViewController {
 
-    private var widthBackView: CGFloat {
+    var widthBackView: CGFloat {
         profileHeader.backView.bounds.width
     }
 
-    private var heightBackView: CGFloat {
+    var heightBackView: CGFloat {
         profileHeader.backView.bounds.height
     }
 
-    private func setupGesture(){
+    func setupGesture(){
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction))
         profileHeader.avatarImageView.addGestureRecognizer(tapGesture)
         let closeGesture = UITapGestureRecognizer(target: self, action: #selector(closeAction))
         profileHeader.closeButton.addGestureRecognizer(closeGesture)
     }
 
-    @objc private func tapAction() {
+    @objc func tapAction() {
         isAvatarOpen = true
         UIView.animate(withDuration: 0.5) {
             self.tabBarController?.tabBar.isHidden = true
@@ -156,7 +178,7 @@ extension ProfileViewController {
         }
     }
 
-    @objc private func closeAction() {
+    @objc func closeAction() {
         isAvatarOpen = false
         UIView.animate(withDuration: 0.3) {
             self.profileHeader.closeButton.alpha = 0

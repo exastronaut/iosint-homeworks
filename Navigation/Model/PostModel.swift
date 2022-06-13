@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import UIKit
 
 public struct PostModel {
+
     public var author: String
     public var description: String
     public var image: String
@@ -17,11 +19,32 @@ public struct PostModel {
     public static func makeMockModel() -> [[PostModel]] {
         var model = [[PostModel]]()
         var section = [PostModel]()
-        section.append(PostModel(author: "Memus", description: "infinite SOCIAL CREDIT hack 100% working FREE by Zhong Xina", image: "post1", likes: 34875, views: 742358))
-        section.append(PostModel(author: "Zelgius5631E", description: "Super Idol Full Song", image: "post2", likes: 290, views: 12232))
-        section.append(PostModel(author: "Zhong Xina", description: "I'm speaking chinese and eating ice cream", image: "post3", likes: 9000, views: 9000))
-        section.append(PostModel(author: "Li Han Myeon", description: "剪梅 (Yi Jian Mei) - 費玉清 (Fei Yu Qing)", image: "post4", likes: 54, views: 3331))
+        section.append(PostModel(
+            author: "Memus",
+            description: "infinite SOCIAL CREDIT hack 100% working FREE by Zhong Xina",
+            image: "post1",
+            likes: 34875,
+            views: 742358))
+        section.append(PostModel(
+            author: "Zelgius5631E",
+            description: "Super Idol Full Song",
+            image: "post2",
+            likes: 290,
+            views: 12232))
+        section.append(PostModel(
+            author: "Zhong Xina",
+            description: "I'm speaking chinese and eating ice cream",
+            image: "post3",
+            likes: 9000,
+            views: 9000))
+        section.append(PostModel(
+            author: "Li Han Myeon",
+            description: "剪梅 (Yi Jian Mei) - 費玉清 (Fei Yu Qing)",
+            image: "post4",
+            likes: 54,
+            views: 3331))
         model.append(section)
         return model
     }
+
 }

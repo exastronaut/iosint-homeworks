@@ -7,10 +7,14 @@
 
 import UIKit
 import StorageService
+import iOSIntPackage
 
 class PostTableViewCell: UITableViewCell {
     
-    //MARK: - Properties
+    // MARK: - Initialization
+
+    private let imageProcessor = ImageProcessor()
+
     private let author: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -20,7 +24,7 @@ class PostTableViewCell: UITableViewCell {
         return label
     }()
 
-    private let image: UIImageView = {
+    let postImage: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .scaleAspectFit
@@ -53,7 +57,7 @@ class PostTableViewCell: UITableViewCell {
         return label
     }()
 
-    //MARK: - Lifecycle
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         customizeCell()
@@ -64,21 +68,35 @@ class PostTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    //MARK: - Methods
-    private func customizeCell() {
-        contentView.backgroundColor = .white
-    }
+    // MARK: - Public functions
 
     func setupCell(model: PostModel) {
         author.text = model.author
-        image.image = UIImage(named: model.image)
+        postImage.image = UIImage(named: model.image)
         descriptionText.text = model.description
         likes.text = "Likes: \(model.likes)"
         views.text = "Views: \(model.views)"
     }
 
-    private func layout() {
-        [author, image, descriptionText, likes, views].forEach { contentView.addSubview($0) }
+    func setupFilter(_ filter: ColorFilter) {
+        guard let image = postImage.image else { return }
+        imageProcessor.processImage(sourceImage: image, filter: filter) {
+            postImage.image = $0
+        }
+    }
+
+}
+
+// MARK: - Private functions
+
+private extension PostTableViewCell {
+
+    func customizeCell() {
+        contentView.backgroundColor = .white
+    }
+
+    func layout() {
+        [author, postImage, descriptionText, likes, views].forEach { contentView.addSubview($0) }
 
         let indent: CGFloat = 16
 
@@ -87,14 +105,14 @@ class PostTableViewCell: UITableViewCell {
             author.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: indent),
             author.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -indent),
 
-            image.topAnchor.constraint(equalTo: author.bottomAnchor, constant: indent),
-            image.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            image.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
-            image.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postImage.topAnchor.constraint(equalTo: author.bottomAnchor, constant: indent),
+            postImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postImage.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
+            postImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 
-            descriptionText.topAnchor.constraint(equalTo: image.bottomAnchor, constant: indent),
-            descriptionText.leadingAnchor.constraint(equalTo: image.leadingAnchor, constant: indent),
-            descriptionText.trailingAnchor.constraint(equalTo: image.trailingAnchor, constant: -indent),
+            descriptionText.topAnchor.constraint(equalTo: postImage.bottomAnchor, constant: indent),
+            descriptionText.leadingAnchor.constraint(equalTo: postImage.leadingAnchor, constant: indent),
+            descriptionText.trailingAnchor.constraint(equalTo: postImage.trailingAnchor, constant: -indent),
 
             likes.topAnchor.constraint(equalTo: descriptionText.bottomAnchor, constant: indent),
             likes.leadingAnchor.constraint(equalTo: descriptionText.leadingAnchor),
@@ -106,4 +124,5 @@ class PostTableViewCell: UITableViewCell {
             views.bottomAnchor.constraint(equalTo: likes.bottomAnchor)
         ])
     }
+
 }
