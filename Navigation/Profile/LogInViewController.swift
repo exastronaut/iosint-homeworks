@@ -8,7 +8,9 @@
 import UIKit
 
 class LogInViewController: UIViewController {
+
     //MARK: - Properties
+
     private let notificationCenter = NotificationCenter.default
 
     private let scrollView: UIScrollView =  {
@@ -85,6 +87,7 @@ class LogInViewController: UIViewController {
     }()
 
     //MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         customizeView()
@@ -103,7 +106,9 @@ class LogInViewController: UIViewController {
         notificationCenter.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
 
     }
+
     //MARK: - Methods
+
     @objc private func keyboardShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollView.contentInset.bottom = keyboardSize.height
@@ -117,7 +122,14 @@ class LogInViewController: UIViewController {
     }
 
     @objc func showProfile() {
-        let profileViewController = ProfileViewController()
+        guard let input = logTextField.text else { return }
+
+        #if DEBUG
+            let profileViewController = ProfileViewController(userService: TestUserService(), inputName: input)
+        #else
+            let profileViewController = ProfileViewController(userService: CurrentUserService(), inputName: input)
+        #endif
+
         navigationController?.pushViewController(profileViewController, animated: true)
     }
 
@@ -162,11 +174,15 @@ class LogInViewController: UIViewController {
             logInButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
+
 }
 
 //MARK: - Extensions
+
 extension LogInViewController: UITextFieldDelegate {
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
     }
+    
 }
