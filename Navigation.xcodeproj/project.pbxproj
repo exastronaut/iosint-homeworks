@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C74CFDF02868FB3F004556CB /* LoginInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74CFDEF2868FB3F004556CB /* LoginInspector.swift */; };
+		C74CFDF22868FB4B004556CB /* Checker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74CFDF12868FB4B004556CB /* Checker.swift */; };
+		C74CFDF42868FB54004556CB /* LoginFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74CFDF32868FB54004556CB /* LoginFactory.swift */; };
 		C759180327F39CB2004DB176 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C759180227F39CB2004DB176 /* LogInViewController.swift */; };
 		C759180527F4E5CC004DB176 /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C759180427F4E5CC004DB176 /* UITextField+Extension.swift */; };
 		C759180927F6F623004DB176 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C759180827F6F623004DB176 /* UIImage+Extension.swift */; };
@@ -32,6 +35,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C74CFDEF2868FB3F004556CB /* LoginInspector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginInspector.swift; sourceTree = "<group>"; };
+		C74CFDF12868FB4B004556CB /* Checker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Checker.swift; sourceTree = "<group>"; };
+		C74CFDF32868FB54004556CB /* LoginFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFactory.swift; sourceTree = "<group>"; };
 		C759180227F39CB2004DB176 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		C759180427F4E5CC004DB176 /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		C759180827F6F623004DB176 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIImage+Extension.swift"; path = "Navigation/Extension/UIImage+Extension.swift"; sourceTree = SOURCE_ROOT; };
@@ -69,6 +75,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C74CFDEC2868FA4B004556CB /* Factory */ = {
+			isa = PBXGroup;
+			children = (
+				C74CFDF32868FB54004556CB /* LoginFactory.swift */,
+			);
+			path = Factory;
+			sourceTree = "<group>";
+		};
+		C74CFDED2868FA6C004556CB /* Singleton */ = {
+			isa = PBXGroup;
+			children = (
+				C74CFDF12868FB4B004556CB /* Checker.swift */,
+			);
+			path = Singleton;
+			sourceTree = "<group>";
+		};
+		C74CFDEE2868FB07004556CB /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				C74CFDEF2868FB3F004556CB /* LoginInspector.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
 		C759180A27F702E9004DB176 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -99,6 +129,9 @@
 			isa = PBXGroup;
 			children = (
 				C7A62C0527D244A0000CF42B /* AppDelegate.swift */,
+				C74CFDEE2868FB07004556CB /* Service */,
+				C74CFDED2868FA6C004556CB /* Singleton */,
+				C74CFDEC2868FA4B004556CB /* Factory */,
 				C759180A27F702E9004DB176 /* Extension */,
 				C7E32E382809D9DB007D4481 /* Model */,
 				C7FA3338281F191400F708C2 /* Photos */,
@@ -225,8 +258,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C74CFDF02868FB3F004556CB /* LoginInspector.swift in Sources */,
 				C759180327F39CB2004DB176 /* LogInViewController.swift in Sources */,
 				C7A62C1E27D24B39000CF42B /* PostViewController.swift in Sources */,
+				C74CFDF22868FB4B004556CB /* Checker.swift in Sources */,
 				C7A62C1C27D24B1C000CF42B /* ProfileViewController.swift in Sources */,
 				C759180927F6F623004DB176 /* UIImage+Extension.swift in Sources */,
 				C7FA332D281C6B9100F708C2 /* PhotosTableViewCell.swift in Sources */,
@@ -239,6 +274,7 @@
 				C759180C27F71CD0004DB176 /* ViewController.swift in Sources */,
 				C759180527F4E5CC004DB176 /* UITextField+Extension.swift in Sources */,
 				C7A62C2327D6139A000CF42B /* InfoViewController.swift in Sources */,
+				C74CFDF42868FB54004556CB /* LoginFactory.swift in Sources */,
 				C7A62C2527D6890E000CF42B /* Post.swift in Sources */,
 				C7A62C0627D244A0000CF42B /* AppDelegate.swift in Sources */,
 				C7E32E3E280ABAF4007D4481 /* UIView+Extension.swift in Sources */,

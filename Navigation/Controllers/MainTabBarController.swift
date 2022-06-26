@@ -9,20 +9,41 @@ import UIKit
 
 class MainTabBarController: UITabBarController {
 
+    private var loginInspector: LoginInspector
+
+    init(_ loginInspector: LoginInspector) {
+        self.loginInspector = loginInspector
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabBar()
     }
 
     private func setupTabBar() {
-        let feedViewController = createNavigationController(viewController: FeedViewController(),
-                                                            itemName: "Feed",
-                                                            itemImage: "house")
-        let logInViewController = createNavigationController(viewController: LogInViewController(),
-                                                             itemName: "Profile",
-                                                             itemImage: "person")
+        let feedNavigationController = createNavigationController(
+            viewController: FeedViewController(),
+            itemName: "Feed",
+            itemImage: "house"
+        )
 
-        viewControllers = [feedViewController, logInViewController]
+
+        let loginViewController = LogInViewController()
+        loginViewController.delegate = loginInspector
+
+        let logInNavigationController = createNavigationController(
+            viewController: loginViewController,
+            itemName: "Profile",
+            itemImage: "person"
+        )
+
+        viewControllers = [feedNavigationController, logInNavigationController]
     }
 
     private func createNavigationController(viewController: UIViewController, itemName: String, itemImage: String) -> UINavigationController {
