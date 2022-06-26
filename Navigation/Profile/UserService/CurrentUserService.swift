@@ -7,14 +7,18 @@
 
 final class CurrentUserService {
 
-    var user: User?
+    private var user: User
+
+    init(_ user: User) {
+        self.user = user
+    }
 
 }
 
 extension CurrentUserService: UserService {
 
     func getUser(with name: String) -> User? {
-        return name == user?.fullname ? user : nil
+        return name == user.fullname ? user : nil
     }
 
 }

@@ -44,9 +44,13 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
 
         if let user = userService.getUser(with: inputName) {
-            print("Name: \(user.fullname), avatar: \(user.avatar).jpg, status: \(user.status)")
+            profileHeader.setupUser(
+                name: user.fullname,
+                avatar: user.avatar,
+                status: user.status
+            )
         } else {
-            print("Error: \(inputName) isn't found")
+            profileHeader.setupUser()
         }
 
         customizeView()

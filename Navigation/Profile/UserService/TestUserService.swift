@@ -7,10 +7,10 @@
 
 final class TestUserService {
 
-    let user = User(
-        fullname: "Zhong Xina",
-        avatar: "avatar",
-        status: "*** *****"
+    private let user = User(
+        fullname: "Test Name",
+        avatar: "testAvatar",
+        status: "Test Status"
     )
     
 }

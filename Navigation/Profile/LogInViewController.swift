@@ -127,7 +127,13 @@ class LogInViewController: UIViewController {
         #if DEBUG
             let profileViewController = ProfileViewController(userService: TestUserService(), inputName: input)
         #else
-            let profileViewController = ProfileViewController(userService: CurrentUserService(), inputName: input)
+            let user = User(
+                fullname: "Zhong Xina",
+                avatar: "avatar",
+                status: "*** *****"
+            )
+            let userService = CurrentUserService(user)
+            let profileViewController = ProfileViewController(userService: userService, inputName: input)
         #endif
 
         navigationController?.pushViewController(profileViewController, animated: true)
