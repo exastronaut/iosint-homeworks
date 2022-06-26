@@ -6,11 +6,15 @@
 //
 import UIKit
 
-class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
+
     //MARK: - Properties
+
     private let posts = PostModel.makeMockModel()
     private let profileHeader = ProfileHeaderView()
     private var isAvatarOpen = false
+    private let userService: UserService
+    private let inputName: String
 
     private lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
@@ -24,8 +28,31 @@ class ProfileViewController: UIViewController {
 
 
     //MARK: - Lifecycle
+
+    init(userService: UserService, inputName: String) {
+        self.userService = userService
+        self.inputName = inputName
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        if let user = userService.getUser(with: inputName) {
+            profileHeader.setupUser(
+                name: user.fullname,
+                avatar: user.avatar,
+                status: user.status
+            )
+        } else {
+            profileHeader.setupUser()
+        }
+
         customizeView()
         layout()
         setupGesture()
@@ -37,6 +64,7 @@ class ProfileViewController: UIViewController {
     }
 
     //MARK: - Methods
+
     private func customizeView() {
         view.backgroundColor = .systemBackground
     }
@@ -54,7 +82,9 @@ class ProfileViewController: UIViewController {
 }
 
 //MARK: - UITableViewDelegate
+
 extension ProfileViewController: UITableViewDelegate {
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         UITableView.automaticDimension
     }
@@ -76,10 +106,13 @@ extension ProfileViewController: UITableViewDelegate {
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
+
 }
 
 //MARK: - UITableViewDataSource
+
 extension ProfileViewController: UITableViewDataSource {
+
     func numberOfSections(in tableView: UITableView) -> Int {
         2
     }
@@ -99,10 +132,13 @@ extension ProfileViewController: UITableViewDataSource {
             return postCell
         }
     }
+
 }
 
 //MARK: - Gestures and Animations
+
 extension ProfileViewController {
+
     private var widthBackView: CGFloat {
         profileHeader.backView.bounds.width
     }
@@ -158,5 +194,6 @@ extension ProfileViewController {
             }
         }
     }
+
 }
 

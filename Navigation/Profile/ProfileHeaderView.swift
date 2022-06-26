@@ -9,12 +9,13 @@ import UIKit
 class ProfileHeaderView: UIView {
 
     //MARK: - Properties
+
     private var statusText: String?
 
     let avatarImageView: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.image = UIImage(named: "avatar")
+//        image.image = UIImage(named: "avatar")
         image.clipsToBounds = true
         image.layer.cornerRadius = 50
         image.layer.borderWidth = 3
@@ -27,7 +28,7 @@ class ProfileHeaderView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        label.text = "Zhong Xina"
+//        label.text = "Zhong Xina"
         label.textColor = .black
         return label
     }()
@@ -36,7 +37,7 @@ class ProfileHeaderView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.text = "Waiting for something..."
+//        label.text = "Waiting for something..."
         label.textColor = .gray
         return label
     }()
@@ -96,8 +97,10 @@ class ProfileHeaderView: UIView {
     var trailingAvatarImageView = NSLayoutConstraint()
 
     //MARK: - Lifecycle
+
     override init(frame: CGRect) {
         super.init(frame: frame)
+
         layout()
     }
 
@@ -106,6 +109,16 @@ class ProfileHeaderView: UIView {
     }
     
     //MARK: - Methods
+
+    func setupUser(name: String = "unknown",
+                   avatar: String = "unknown",
+                   status: String = "Waiting for something..."
+    ) {
+        fullNameLabel.text = name
+        avatarImageView.image = UIImage(named: avatar)
+        statusLabel.text = status
+    }
+
     @objc func buttonPressed() {
         guard let text = statusTextField.text, !text.isEmpty else {
             statusLabel.text = "Waiting for something..."
@@ -162,8 +175,11 @@ class ProfileHeaderView: UIView {
 }
 
 //MARK: - UITextFieldDelegate
+
 extension ProfileHeaderView: UITextFieldDelegate {
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         endEditing(true)
     }
+
 }
