@@ -20,12 +20,7 @@ final class Checker {
 extension Checker: LoginViewControllerDelegate {
 
     func didCheckLogIn(login: String, password: String) -> Bool {
-        if self.login.hash == login.hash,
-           pswd.hash == password.hash {
-            return true
-        } else {
-            return false
-        }
+        self.login.hash == login.hash && pswd.hash == password.hash 
     }
 
 }
