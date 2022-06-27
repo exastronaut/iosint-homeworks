@@ -7,8 +7,18 @@
 
 import UIKit
 
+protocol LoginViewControllerDelegate: AnyObject {
+
+    func didCheckLogIn(login: String, password: String) -> Bool
+
+}
+
 class LogInViewController: UIViewController {
+
     //MARK: - Properties
+
+    weak var delegate: LoginViewControllerDelegate?
+
     private let notificationCenter = NotificationCenter.default
 
     private let scrollView: UIScrollView =  {
@@ -85,6 +95,7 @@ class LogInViewController: UIViewController {
     }()
 
     //MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         customizeView()
@@ -104,6 +115,7 @@ class LogInViewController: UIViewController {
 
     }
     //MARK: - Methods
+
     @objc private func keyboardShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollView.contentInset.bottom = keyboardSize.height
@@ -117,8 +129,15 @@ class LogInViewController: UIViewController {
     }
 
     @objc func showProfile() {
-        let profileViewController = ProfileViewController()
-        navigationController?.pushViewController(profileViewController, animated: true)
+        guard let delegate = delegate,
+              let login = logTextField.text,
+              let password = passwordTextField.text
+        else { return }
+
+        if delegate.didCheckLogIn(login: login, password: password) {
+            let profileViewController = ProfileViewController()
+            navigationController?.pushViewController(profileViewController, animated: true)
+        }
     }
 
 
@@ -162,11 +181,16 @@ class LogInViewController: UIViewController {
             logInButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
+
 }
 
-//MARK: - Extensions
+//MARK: - UITextFieldDelegate
+
 extension LogInViewController: UITextFieldDelegate {
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
     }
+
 }
+
