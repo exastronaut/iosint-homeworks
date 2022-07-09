@@ -10,6 +10,7 @@ import UIKit
 class PhotosCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
+
     private let image: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -18,8 +19,10 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     }()
 
     //MARK: - Lifecycle
+
     override init(frame: CGRect) {
         super.init(frame: frame)
+
         layout()
     }
 
@@ -28,8 +31,9 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     }
 
     //MARK: - Methods
-    func setupCell(model: PhotosModel) {
-        image.image = UIImage(named: model.image)
+
+    func setupCell(model: UIImage) {
+        image.image = model
     }
 
     private func layout() {
@@ -42,4 +46,5 @@ class PhotosCollectionViewCell: UICollectionViewCell {
             image.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
+    
 }

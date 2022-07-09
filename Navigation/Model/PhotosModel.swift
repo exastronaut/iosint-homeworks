@@ -6,14 +6,16 @@
 //
 
 import Foundation
+import UIKit
 
 struct PhotosModel {
-    var image: String
     
-    static func makeMockModel() -> [PhotosModel] {
-        var model = [PhotosModel]()
+    static func makeMockModel() -> [UIImage]? {
+        var model = [UIImage]()
         for element in 1...20 {
-            model.append(PhotosModel(image: "photo\(element)"))
+            guard let image = UIImage(named: "photo\(element)") else { return nil }
+
+            model.append(image)
         }
         return model
     }

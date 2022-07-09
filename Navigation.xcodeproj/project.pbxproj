@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C73DB289287A019700A8890B /* iOSIntPackage in Frameworks */ = {isa = PBXBuildFile; productRef = C73DB288287A019700A8890B /* iOSIntPackage */; };
 		C759180327F39CB2004DB176 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C759180227F39CB2004DB176 /* LogInViewController.swift */; };
 		C759180527F4E5CC004DB176 /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C759180427F4E5CC004DB176 /* UITextField+Extension.swift */; };
 		C759180927F6F623004DB176 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C759180827F6F623004DB176 /* UIImage+Extension.swift */; };
-		C759180C27F71CD0004DB176 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C759180B27F71CD0004DB176 /* ViewController.swift */; };
 		C7A62C0627D244A0000CF42B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A62C0527D244A0000CF42B /* AppDelegate.swift */; };
 		C7A62C0F27D244A2000CF42B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7A62C0E27D244A2000CF42B /* Assets.xcassets */; };
 		C7A62C1227D244A2000CF42B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7A62C1027D244A2000CF42B /* LaunchScreen.storyboard */; };
@@ -35,7 +35,6 @@
 		C759180227F39CB2004DB176 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		C759180427F4E5CC004DB176 /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		C759180827F6F623004DB176 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIImage+Extension.swift"; path = "Navigation/Extension/UIImage+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		C759180B27F71CD0004DB176 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		C7A62C0227D244A0000CF42B /* Navigation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navigation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7A62C0527D244A0000CF42B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C7A62C0E27D244A2000CF42B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -63,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C73DB289287A019700A8890B /* iOSIntPackage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,7 +118,6 @@
 				C7A62C1927D24B03000CF42B /* FeedViewController.swift */,
 				C7A62C1D27D24B39000CF42B /* PostViewController.swift */,
 				C7A62C2227D6139A000CF42B /* InfoViewController.swift */,
-				C759180B27F71CD0004DB176 /* ViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -171,6 +170,9 @@
 			dependencies = (
 			);
 			name = Navigation;
+			packageProductDependencies = (
+				C73DB288287A019700A8890B /* iOSIntPackage */,
+			);
 			productName = Navigation;
 			productReference = C7A62C0227D244A0000CF42B /* Navigation.app */;
 			productType = "com.apple.product-type.application";
@@ -199,6 +201,9 @@
 				Base,
 			);
 			mainGroup = C7A62BF927D244A0000CF42B;
+			packageReferences = (
+				C73DB287287A019700A8890B /* XCRemoteSwiftPackageReference "iOSIntPackage" */,
+			);
 			productRefGroup = C7A62C0327D244A0000CF42B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -236,7 +241,6 @@
 				C7A62C1A27D24B03000CF42B /* FeedViewController.swift in Sources */,
 				C7E32E3C280AA8F0007D4481 /* PostTableViewCell.swift in Sources */,
 				C7FA3331281E937E00F708C2 /* PhotosViewController.swift in Sources */,
-				C759180C27F71CD0004DB176 /* ViewController.swift in Sources */,
 				C759180527F4E5CC004DB176 /* UITextField+Extension.swift in Sources */,
 				C7A62C2327D6139A000CF42B /* InfoViewController.swift in Sources */,
 				C7A62C2527D6890E000CF42B /* Post.swift in Sources */,
@@ -454,6 +458,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C73DB287287A019700A8890B /* XCRemoteSwiftPackageReference "iOSIntPackage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/TrueMax/iOSIntPackage.git";
+			requirement = {
+				branch = imagepublisher;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C73DB288287A019700A8890B /* iOSIntPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C73DB287287A019700A8890B /* XCRemoteSwiftPackageReference "iOSIntPackage" */;
+			productName = iOSIntPackage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C7A62BFA27D244A0000CF42B /* Project object */;
 }
