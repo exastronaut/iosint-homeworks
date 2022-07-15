@@ -7,59 +7,39 @@
 
 import UIKit
 
-class InfoViewController: UIViewController {
+final class InfoViewController: UIViewController {
 
-    let showAlert: UIButton = {
-        let button = UIButton()
+    //MARK: - Private
 
-        button.setTitle("Show Alert", for: .normal)
-        button.setTitleColor(.systemYellow, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
+    //MARK: UI
 
+    private lazy var showAlert: CustomButton = {
+        let button = CustomButton(title: "Show alert", titleColor: .black)
+        button.delegat = self
         return button
     }()
+
+    //MARK: - Override functions
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .systemBlue
-        title = "Info"
-
-        setConstraints()
-
-        showAlert.addTarget(self, action: #selector(showAlertTapped), for: .touchUpInside)
+        setupView()
+        setupLayout()
     }
 
-    @objc func showAlertTapped() {
-        let alert = UIAlertController(title: "Close info",
-                                      message: "Do you close info?",
-                                      preferredStyle: .alert)
-
-        let cancelAction = UIAlertAction(title: "Cancel",
-                                      style: .cancel,
-                                      handler: { _ in
-            print("cancel")
-        })
-
-        alert.addAction(cancelAction)
-
-        let closeAction = UIAlertAction(title: "Close",
-                                      style: .destructive,
-                                      handler: { _ in
-            print("close")
-            self.dismiss(animated: true, completion: nil)
-        })
-
-        alert.addAction(closeAction)
-
-        present(alert, animated: true, completion: nil)
-    }
 }
 
-//MARK: SetConstraints
+//MARK: - Private functions
 
-extension InfoViewController {
-    func setConstraints() {
+private extension InfoViewController {
+
+    func setupView() {
+        view.backgroundColor = .systemBlue
+        title = "Info"
+    }
+
+    func setupLayout() {
         view.addSubview(showAlert)
 
         NSLayoutConstraint.activate([
@@ -69,4 +49,43 @@ extension InfoViewController {
             showAlert.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
+
+    func showAlertTapped() {
+        let alert = UIAlertController(
+            title: "Close info",
+            message: "Do you close info?",
+            preferredStyle: .alert
+        )
+
+        let cancelAction = UIAlertAction(
+            title: "Cancel",
+            style: .cancel,
+            handler: nil
+        )
+
+        alert.addAction(cancelAction)
+
+        let closeAction = UIAlertAction(
+            title: "Close",
+            style: .destructive,
+            handler: { _ in
+                self.dismiss(animated: true, completion: nil)
+            }
+        )
+
+        alert.addAction(closeAction)
+
+        present(alert, animated: true, completion: nil)
+    }
+
+}
+
+//MARK: - CustomButtonProtocol
+
+extension InfoViewController: CustomButtonProtocol {
+
+    func didTapButton() {
+        showAlertTapped()
+    }
+
 }
