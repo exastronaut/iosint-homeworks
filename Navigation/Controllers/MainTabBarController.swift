@@ -15,7 +15,7 @@ class MainTabBarController: UITabBarController {
     }
 
     private func setupTabBar() {
-        let feedViewController = createNavigationController(viewController: FeedViewController(),
+        let feedViewController = createNavigationController(viewController: FeedViewController(model: FeedModel()),
                                                             itemName: "Feed",
                                                             itemImage: "house")
         let logInViewController = createNavigationController(viewController: LogInViewController(),
