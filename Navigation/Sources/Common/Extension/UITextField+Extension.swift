@@ -8,8 +8,10 @@
 import UIKit
 
 extension UITextField {
+
     func ident(size: CGFloat) {
         leftView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: size, height: self.frame.height)))
         leftViewMode = .always
     }
+    
 }

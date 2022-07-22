@@ -9,29 +9,17 @@ import UIKit
 
 class MainTabBarController: UITabBarController {
 
+    private let feedScreen = ModuleFactory(navigationController: UINavigationController(), flow: .feed)
+    private let profileScreen = ModuleFactory(navigationController: UINavigationController(), flow: .login)
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
         setupTabBar()
     }
 
     private func setupTabBar() {
-        let feedViewController = createNavigationController(viewController: FeedViewController(),
-                                                            itemName: "Feed",
-                                                            itemImage: "house")
-        let logInViewController = createNavigationController(viewController: LogInViewController(),
-                                                             itemName: "Profile",
-                                                             itemImage: "person")
-
-        viewControllers = [feedViewController, logInViewController]
-    }
-
-    private func createNavigationController(viewController: UIViewController, itemName: String, itemImage: String) -> UINavigationController {
-        let item = UITabBarItem(title: itemName,
-                                image: UIImage(systemName: itemImage)?.withAlignmentRectInsets(.init(top: 10, left: 0, bottom: 0, right: 0)),
-                                tag: 0)
-        let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.tabBarItem = item
-
-        return navigationController
+        viewControllers = [feedScreen.navigationController, profileScreen.navigationController]
     }
 }
+

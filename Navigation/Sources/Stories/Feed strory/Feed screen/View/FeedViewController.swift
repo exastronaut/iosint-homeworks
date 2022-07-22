@@ -9,6 +9,10 @@ import UIKit
 
 class FeedViewController: UIViewController {
 
+    // MARK: External dependencies
+
+    private let viewModel: FeedViewModel
+
     private let stackView: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -35,23 +39,67 @@ class FeedViewController: UIViewController {
 
     let post = Post(title: "Post Title")
 
+    // MARK: - Init
+
+    init(
+        viewModel: FeedViewModel
+    ) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Override functions
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        customizeView()
-        layout()
+
+        setupViewModel()
+        setupView()
+        setupLayout()
     }
 
-    @objc func showPostTapped() {
+
+}
+
+// MARK: - Private functions
+
+private extension FeedViewController {
+
+    func setupViewModel() {
+        viewModel.stateChanged = { [weak self] state in
+            guard let _ = self else { return }
+
+            switch state {
+            case .initial:
+                ()
+            case .loading:
+                ()
+            case .loaded:
+                ()
+            case .error:
+                ()
+            }
+        }
+    }
+
+    @objc
+    func showPostTapped() {
+        guard let navigationController = navigationController else { return }
+
         let postViewController = PostViewController(post: post)
-        navigationController?.pushViewController(postViewController, animated: true)
+        navigationController.pushViewController(postViewController, animated: true)
     }
 
-    private func customizeView() {
+    func setupView() {
         view.backgroundColor = .systemPink
         title = "Feed"
     }
 
-    private func layout() {
+    func setupLayout() {
         view.addSubview(stackView)
 
         NSLayoutConstraint.activate([
@@ -61,4 +109,5 @@ class FeedViewController: UIViewController {
 
         [showFirstPost, showSecondPost].forEach { stackView.addArrangedSubview($0) }
     }
+
 }
