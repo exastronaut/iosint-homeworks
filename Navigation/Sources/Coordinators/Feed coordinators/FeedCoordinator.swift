@@ -9,14 +9,10 @@ import UIKit
 
 final class FeedCoordinator {
 
-    func open(navigationController: UINavigationController, coordinator: FeedCoordinator) {
-        let viewModel = FeedViewModel(coordinator: coordinator)
-        let view = FeedViewController(viewModel: viewModel)
-        navigationController.pushViewController(view, animated: true)
-    }
-
-    func pop(navigationController: UINavigationController) {
-        navigationController.popViewController(animated: true)
+    func makeEntryPoint() -> UIViewController {
+        let viewModel = FeedViewModel()
+        let view = FeedViewController(output: viewModel)
+        return view
     }
 
 }

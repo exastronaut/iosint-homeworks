@@ -9,13 +9,8 @@ import UIKit
 
 final class ProfileCoordinator {
 
-    func open(navigationController: UINavigationController) {
-        let view = ProfileViewController()
-        navigationController.pushViewController(view, animated: true)
-    }
-
-    func pop(navigationController: UINavigationController) {
-        navigationController.popViewController(animated: true)
+    func makeEntryPoint() -> UIViewController {
+        ProfileViewController()
     }
 
 }

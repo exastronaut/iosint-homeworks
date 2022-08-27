@@ -5,9 +5,7 @@
 //  Created by Артем Свиридов on 21.07.2022.
 //
 
-import UIKit
-
-protocol LoginModuleOutput: AnyObject {
+protocol LoginmoduleOutput {
 
     func didTapButton()
 
@@ -19,15 +17,15 @@ final class LoginPresenter {
 
     // MARK: External dependencies
 
-    weak var view: LoginScreenInput!
-    private var moduleOutput: LoginModuleOutput
+    private unowned let view: LoginScreenInput
+    var moduleOutput: LoginmoduleOutput?
 
     // MARK: - Initialization
 
-    init(moduleOutput: LoginModuleOutput) {
-        self.moduleOutput = moduleOutput
+    init(view: LoginScreenInput) {
+        self.view = view
     }
-
+    
 }
 
 extension LoginPresenter: LoginScreenInput {}
@@ -35,8 +33,8 @@ extension LoginPresenter: LoginScreenInput {}
 extension LoginPresenter: LoginScreenOutput {
 
     func didTapButton() {
-        moduleOutput.didTapButton()
+        UserAuthorization.isAuthorized = true
+        moduleOutput?.didTapButton()
     }
 
 }
-

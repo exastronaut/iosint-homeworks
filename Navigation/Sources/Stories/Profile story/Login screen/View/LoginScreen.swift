@@ -15,19 +15,6 @@ final class LoginScreen: UIViewController {
 
     var output: LoginScreenOutput!
 
-    // MARK: - Initialization
-
-    private var presenter: LoginScreenInput
-    
-    init(presenter: LoginScreenInput) {
-        self.presenter = presenter
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     // MARK: - Private
 
     // MARK: Variables 
@@ -158,7 +145,6 @@ private extension LoginScreen {
     @objc
     func showProfile() {
         output.didTapButton()
-        
     }
 
 

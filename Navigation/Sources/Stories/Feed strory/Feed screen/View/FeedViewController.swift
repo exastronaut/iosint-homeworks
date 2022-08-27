@@ -11,7 +11,9 @@ class FeedViewController: UIViewController {
 
     // MARK: External dependencies
 
-    private let viewModel: FeedViewModel
+    private let output: FeedViewOutput
+
+    // MARK: UI
 
     private let stackView: UIStackView = {
         let stack = UIStackView()
@@ -41,10 +43,8 @@ class FeedViewController: UIViewController {
 
     // MARK: - Init
 
-    init(
-        viewModel: FeedViewModel
-    ) {
-        self.viewModel = viewModel
+    init(output: FeedViewOutput) {
+        self.output = output
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -57,7 +57,6 @@ class FeedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupViewModel()
         setupView()
         setupLayout()
     }
@@ -69,29 +68,9 @@ class FeedViewController: UIViewController {
 
 private extension FeedViewController {
 
-    func setupViewModel() {
-        viewModel.stateChanged = { [weak self] state in
-            guard let _ = self else { return }
-
-            switch state {
-            case .initial:
-                ()
-            case .loading:
-                ()
-            case .loaded:
-                ()
-            case .error:
-                ()
-            }
-        }
-    }
-
     @objc
     func showPostTapped() {
-        guard let navigationController = navigationController else { return }
-
-        let postViewController = PostViewController(post: post)
-        navigationController.pushViewController(postViewController, animated: true)
+        output.didTapButton()
     }
 
     func setupView() {

@@ -2,21 +2,31 @@
 //  MainCoordinator.swift
 //  Navigation
 //
-//  Created by Артем Свиридов on 18.07.2022.
+//  Created by Артем Свиридов on 25.07.2022.
 //
 
 import UIKit
 
-protocol MainCoordinator {
+final class MainCoordinator {
 
-    func runApplication() -> UIViewController
+    // MARK: - Private
 
-}
+    private let feedViewController = Factory(navigationController: UINavigationController(), flow: .feed)
+    private let profileViewController = Factory(navigationController: UINavigationController(), flow: .profile)
 
-final class MainCoordinatorImp: MainCoordinator {
+    // MARK: - Public
 
-    func runApplication() -> UIViewController {
-        MainTabBarController()
+    // MARK: Functions
+
+    func makeTabScreen() -> UITabBarController {
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [
+            feedViewController.navigationController,
+            profileViewController.navigationController
+        ]
+        return tabBarController
     }
+
+
 
 }
