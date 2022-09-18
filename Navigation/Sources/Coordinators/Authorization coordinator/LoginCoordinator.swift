@@ -7,7 +7,27 @@
 
 import UIKit
 
+protocol LoginCoordinatorOutput: AnyObject {
+
+    func didFinishAuth()
+
+}
+
 final class LoginCoordinator {
+
+    // MARK: - Private
+
+    // MARK: External dependencies
+
+    private weak var output: LoginCoordinatorOutput?
+
+    // MARK: - Initialization
+
+    init(output: LoginCoordinatorOutput?) {
+        self.output = output
+    }
+
+    // MARK: - Public functions
 
     func makeEntryPoint() -> UIViewController {
         let view = LoginScreen()
@@ -19,8 +39,12 @@ final class LoginCoordinator {
     
 }
 
-extension LoginCoordinator: LoginmoduleOutput {
+// MARK: - LoginModuleOutput
 
-    func didTapButton() {}
+extension LoginCoordinator: LoginModuleOutput {
+
+    func didTapButton() {
+        output?.didFinishAuth()
+    }
 
 }

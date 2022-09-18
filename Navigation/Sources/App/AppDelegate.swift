@@ -13,10 +13,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let mainCoordinator = MainCoordinator()
-
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = mainCoordinator.makeTabScreen()
+        window?.rootViewController = AppCoordinator.shared.start()
         window?.makeKeyAndVisible()
 
         return true

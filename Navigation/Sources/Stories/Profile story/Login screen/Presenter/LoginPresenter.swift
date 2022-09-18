@@ -5,7 +5,7 @@
 //  Created by Артем Свиридов on 21.07.2022.
 //
 
-protocol LoginmoduleOutput {
+protocol LoginModuleOutput {
 
     func didTapButton()
 
@@ -18,7 +18,7 @@ final class LoginPresenter {
     // MARK: External dependencies
 
     private unowned let view: LoginScreenInput
-    var moduleOutput: LoginmoduleOutput?
+    var moduleOutput: LoginModuleOutput?
 
     // MARK: - Initialization
 

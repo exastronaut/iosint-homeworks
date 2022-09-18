@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C709626228B418A9008F47CD /* FeedViewIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C709626128B418A9008F47CD /* FeedViewIO.swift */; };
+		C747484828BBE0C600055C43 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C747484728BBE0C600055C43 /* AppCoordinator.swift */; };
 		C759180327F39CB2004DB176 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C759180227F39CB2004DB176 /* LoginScreen.swift */; };
 		C759180527F4E5CC004DB176 /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C759180427F4E5CC004DB176 /* UITextField+Extension.swift */; };
 		C759180927F6F623004DB176 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C759180827F6F623004DB176 /* UIImage+Extension.swift */; };
@@ -41,6 +42,7 @@
 
 /* Begin PBXFileReference section */
 		C709626128B418A9008F47CD /* FeedViewIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewIO.swift; sourceTree = "<group>"; };
+		C747484728BBE0C600055C43 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		C759180227F39CB2004DB176 /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		C759180427F4E5CC004DB176 /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		C759180827F6F623004DB176 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
@@ -85,26 +87,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C74CF87128A953E2006FEE03 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
 		C74CF87A28A96C2C006FEE03 /* Authorization coordinator */ = {
 			isa = PBXGroup;
 			children = (
 				C7A0016C288B230E00CE332B /* LoginCoordinator.swift */,
 			);
 			path = "Authorization coordinator";
-			sourceTree = "<group>";
-		};
-		C74CF87D28A96D49006FEE03 /* Factory */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Factory;
 			sourceTree = "<group>";
 		};
 		C759180A27F702E9004DB176 /* Extension */ = {
@@ -120,6 +108,7 @@
 		C78626832885EE24008EA080 /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
+				C747484728BBE0C600055C43 /* AppCoordinator.swift */,
 				C7862686288684E0008EA080 /* Main coordinator */,
 				C74CF87A28A96C2C006FEE03 /* Authorization coordinator */,
 				C7862687288684EE008EA080 /* Feed coordinators */,
@@ -168,8 +157,6 @@
 		C786268C288685A3008EA080 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				C74CF87D28A96D49006FEE03 /* Factory */,
-				C74CF87128A953E2006FEE03 /* Protocols */,
 				C759180A27F702E9004DB176 /* Extension */,
 			);
 			path = Common;
@@ -473,6 +460,7 @@
 				C7A0016D288B230E00CE332B /* LoginCoordinator.swift in Sources */,
 				C7FA332D281C6B9100F708C2 /* PhotosTableViewCell.swift in Sources */,
 				C7E32E3A2809D9FE007D4481 /* PostModel.swift in Sources */,
+				C747484828BBE0C600055C43 /* AppCoordinator.swift in Sources */,
 				C7FA3337281F123700F708C2 /* PhotosModel.swift in Sources */,
 				C7A62C1A27D24B03000CF42B /* FeedViewController.swift in Sources */,
 				C7E32E3C280AA8F0007D4481 /* PostTableViewCell.swift in Sources */,

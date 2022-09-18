@@ -26,7 +26,7 @@ private extension Factory {
     func startModule() {
         switch flow {
         case .feed:
-            let feedCoordinator = FeedCoordinator()
+            let feedCoordinator = FeedCoordinator(presenter: navigationController)
             navigationController = createNavigationController(
                 viewController: feedCoordinator.makeEntryPoint(),
                 itemName: Constants.feedName,

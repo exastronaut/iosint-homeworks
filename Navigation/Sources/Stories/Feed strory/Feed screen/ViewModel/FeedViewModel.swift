@@ -5,7 +5,17 @@
 //  Created by Артем Свиридов on 19.07.2022.
 //
 
+import UIKit
+
+protocol FeedModuleOutput: AnyObject {
+
+    func didTapButton()
+
+}
+
 final class FeedViewModel {
+
+    var moduleOutput: FeedModuleOutput?
 
     var stateChanged: ((State) -> Void)?
 
@@ -15,12 +25,18 @@ final class FeedViewModel {
         }
     }
 
+}
+
+// MARK: - Private functions
+
+private extension FeedViewModel {
+
     func changeState(_ action: Action) {
         switch action {
         case .viewIsReady:
             ()
         case .didTapButton:
-            ()
+            moduleOutput?.didTapButton()
         }
     }
 
@@ -53,7 +69,6 @@ extension FeedViewModel {
 
     enum State {
         case initial
-        case didTapButton
     }
 
 }
