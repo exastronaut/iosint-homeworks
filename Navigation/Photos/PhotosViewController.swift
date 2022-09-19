@@ -8,20 +8,21 @@
 import UIKit
 import iOSIntPackage
 
-class PhotosViewController: UIViewController {
+final class PhotosViewController: UIViewController {
 
     //MARK: - Properties
 
-    private  let imagePublisherFacade = ImagePublisherFacade()
-
-    private var photos = [UIImage]()
-    private lazy var photosModel = PhotosModel.makeMockModel()
+    private let imageProcessor = ImageProcessor()
+    private let photosModel = PhotosModel.makeMockModel()
 
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(PhotosCollectionViewCell.self, forCellWithReuseIdentifier: PhotosCollectionViewCell.identifier)
+        collectionView.register(
+            PhotosCollectionViewCell.self,
+            forCellWithReuseIdentifier: PhotosCollectionViewCell.identifier
+        )
         collectionView.dataSource = self
         collectionView.delegate = self
         return collectionView
@@ -32,10 +33,9 @@ class PhotosViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        imagePublisherFacade.subscribe(self)
-        imagePublisherFacade.addImagesWithTimer(time: 1, repeat: 20, userImages: photosModel)
-        customizeView()
-        layout()
+        setupView()
+        setupLayout()
+        configurePhotos()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -44,21 +44,35 @@ class PhotosViewController: UIViewController {
         navigationController?.navigationBar.isHidden = false
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+}
 
-        imagePublisherFacade.removeSubscription(for: self)
-        imagePublisherFacade.rechargeImageLibrary()
+//MARK: - Private functions
+
+private extension PhotosViewController {
+
+    func configurePhotos() {
+        guard let photos = photosModel else { return }
+
+        let start = DispatchTime.now()
+
+        imageProcessor.processImagesOnThread(
+            sourceImages: photos,
+            filter: .chrome,
+            qos: .userInteractive
+        ) { _ in }
+
+        let end = DispatchTime.now()
+
+        let timeInterval = Double(end.uptimeNanoseconds - start.uptimeNanoseconds) / 1_000_000_000
+        print(timeInterval)
     }
 
-    //MARK: - Methods
-
-    private func customizeView() {
+    func setupView() {
         view.backgroundColor = .systemBackground
         title = "Photo Gallery"
     }
 
-    private func layout() {
+    func setupLayout() {
         view.addSubview(collectionView)
 
         NSLayoutConstraint.activate([
@@ -68,7 +82,7 @@ class PhotosViewController: UIViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-    
+
 }
 
 //MARK: - UICollectionViewDataSource
@@ -76,16 +90,19 @@ class PhotosViewController: UIViewController {
 extension PhotosViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        photos.count
+        photosModel?.count ?? 0
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: PhotosCollectionViewCell.identifier,
             for: indexPath
         ) as! PhotosCollectionViewCell
 
-        cell.setupCell(model: photos[indexPath.row])
+        cell.setupCell(model: photosModel?[indexPath.row] ?? UIImage())
 
         return cell
     }
@@ -98,7 +115,11 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
 
     private var sideInset: CGFloat { return 8 }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
         let width = (collectionView.bounds.width - 4 * sideInset) / 3
         return CGSize(width: width, height: width)
     }
@@ -111,19 +132,12 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
         sideInset
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
         UIEdgeInsets(top: sideInset, left: sideInset, bottom: sideInset, right: sideInset)
-    }
-
-}
-
-//MARK: - ImageLibrarySubscriber
-
-extension PhotosViewController: ImageLibrarySubscriber {
-
-    func receive(images: [UIImage]) {
-        photos = images
-        collectionView.reloadData()
     }
 
 }
