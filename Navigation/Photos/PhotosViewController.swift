@@ -14,6 +14,7 @@ final class PhotosViewController: UIViewController {
 
     private let imageProcessor = ImageProcessor()
     private let photosModel = PhotosModel.makeMockModel()
+    private var images = [UIImage]()
 
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -53,18 +54,26 @@ private extension PhotosViewController {
     func configurePhotos() {
         guard let photos = photosModel else { return }
 
-        let start = DispatchTime.now()
-
         imageProcessor.processImagesOnThread(
             sourceImages: photos,
             filter: .chrome,
             qos: .userInteractive
-        ) { _ in }
+        ) { cgImages in
+            let start = DispatchTime.now()
 
-        let end = DispatchTime.now()
+            cgImages.forEach { cgImage in
+                self.images.append(UIImage(cgImage: cgImage!))
+            }
 
-        let timeInterval = Double(end.uptimeNanoseconds - start.uptimeNanoseconds) / 1_000_000_000
-        print(timeInterval)
+            let end = DispatchTime.now()
+
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
+
+            let timeInterval = Double(end.uptimeNanoseconds - start.uptimeNanoseconds) / 1_000_000_000
+            print(timeInterval)
+        }
     }
 
     func setupView() {
@@ -90,7 +99,7 @@ private extension PhotosViewController {
 extension PhotosViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        photosModel?.count ?? 0
+        images.count
     }
 
     func collectionView(
@@ -102,7 +111,7 @@ extension PhotosViewController: UICollectionViewDataSource {
             for: indexPath
         ) as! PhotosCollectionViewCell
 
-        cell.setupCell(model: photosModel?[indexPath.row] ?? UIImage())
+        cell.setupCell(model: images[indexPath.row])
 
         return cell
     }
