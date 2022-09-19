@@ -7,9 +7,21 @@
 
 import UIKit
 
-class LogInViewController: UIViewController {
-    //MARK: - Properties
+final class LoginScreen: UIViewController {
+
+    // MARK: - Public
+
+    // MARK: External dependencies
+
+    var output: LoginScreenOutput!
+
+    // MARK: - Private
+
+    // MARK: Variables 
+
     private let notificationCenter = NotificationCenter.default
+
+    // MARK: UI
 
     private let scrollView: UIScrollView =  {
         let scrollView = UIScrollView()
@@ -84,50 +96,64 @@ class LogInViewController: UIViewController {
         return button
     }()
 
-    //MARK: - Lifecycle
+    // MARK: - Override functions
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        customizeView()
-        layout()
+
+        setupView()
+        setupLayout()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         notificationCenter.addObserver(self, selector: #selector(keyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(keyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+
         notificationCenter.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         notificationCenter.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
 
     }
-    //MARK: - Methods
-    @objc private func keyboardShow(notification: NSNotification) {
+
+}
+
+extension LoginScreen: LoginScreenInput {}
+
+//MARK: - Private functions
+
+private extension LoginScreen {
+
+    @objc
+    func keyboardShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollView.contentInset.bottom = keyboardSize.height
             scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
         }
     }
 
-    @objc private func keyboardHide() {
+    @objc
+    func keyboardHide() {
         scrollView.contentInset = .zero
         scrollView.verticalScrollIndicatorInsets = .zero
     }
 
-    @objc func showProfile() {
-        let profileViewController = ProfileViewController()
-        navigationController?.pushViewController(profileViewController, animated: true)
+    @objc
+    func showProfile() {
+        output.didTapButton()
     }
 
 
-    private func customizeView() {
+    func setupView() {
         view.backgroundColor = .white
         navigationController?.navigationBar.isHidden = true
     }
 
-    private func layout() {
+    func setupLayout() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         [logoImage, stackView, logInButton].forEach { contentView.addSubview($0) }
@@ -162,11 +188,15 @@ class LogInViewController: UIViewController {
             logInButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
+
 }
 
-//MARK: - Extensions
-extension LogInViewController: UITextFieldDelegate {
+//MARK: - UITextFieldDelegate
+
+extension LoginScreen: UITextFieldDelegate {
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
     }
+
 }

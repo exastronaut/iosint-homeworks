@@ -9,6 +9,12 @@ import UIKit
 
 class FeedViewController: UIViewController {
 
+    // MARK: External dependencies
+
+    private let output: FeedViewOutput
+
+    // MARK: UI
+
     private let stackView: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -35,23 +41,44 @@ class FeedViewController: UIViewController {
 
     let post = Post(title: "Post Title")
 
+    // MARK: - Init
+
+    init(output: FeedViewOutput) {
+        self.output = output
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Override functions
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        customizeView()
-        layout()
+
+        setupView()
+        setupLayout()
     }
 
-    @objc func showPostTapped() {
-        let postViewController = PostViewController(post: post)
-        navigationController?.pushViewController(postViewController, animated: true)
+
+}
+
+// MARK: - Private functions
+
+private extension FeedViewController {
+
+    @objc
+    func showPostTapped() {
+        output.didTapButton()
     }
 
-    private func customizeView() {
+    func setupView() {
         view.backgroundColor = .systemPink
         title = "Feed"
     }
 
-    private func layout() {
+    func setupLayout() {
         view.addSubview(stackView)
 
         NSLayoutConstraint.activate([
@@ -61,4 +88,5 @@ class FeedViewController: UIViewController {
 
         [showFirstPost, showSecondPost].forEach { stackView.addArrangedSubview($0) }
     }
+
 }
