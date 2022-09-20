@@ -67,7 +67,6 @@ final class LogInViewController: UIViewController {
         textField.layer.borderWidth = 0.5
         textField.ident(size: 10)
         textField.delegate = self
-        textField.isSecureTextEntry = true
         return textField
     }()
 
@@ -95,25 +94,43 @@ final class LogInViewController: UIViewController {
         return button
     }()
 
+    private let activityIndicator : UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.hidesWhenStopped = true
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+
     //MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         customizeView()
         layout()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        notificationCenter.addObserver(self, selector: #selector(keyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(keyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(keyboardShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil)
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(keyboardHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+
         notificationCenter.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         notificationCenter.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-
     }
 
     //MARK: - Methods
@@ -122,7 +139,12 @@ final class LogInViewController: UIViewController {
     private func keyboardShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollView.contentInset.bottom = keyboardSize.height
-            scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+            scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(
+                top: 0,
+                left: 0,
+                bottom: keyboardSize.height,
+                right: 0
+            )
         }
     }
 
@@ -133,14 +155,31 @@ final class LogInViewController: UIViewController {
     }
 
     @objc
-    func showProfile() {
+    private func showProfile() {
         let profileViewController = ProfileViewController()
         navigationController?.pushViewController(profileViewController, animated: true)
     }
 
     @objc
-    func filterOut() {
-        //MARK: TO DO
+    private func filterOut() {
+        let brutForce = BrutForceService()
+        let generatePassword = brutForce.generatePassword(length: 4)
+
+        passwordTextField.isSecureTextEntry = true
+        passwordTextField.text = generatePassword
+
+        let queue = DispatchQueue(label: "ru.exastronaut.concurrent-queue", attributes: .concurrent)
+        let workItem = DispatchWorkItem {
+            brutForce.bruteForce(passwordToUnlock: generatePassword)
+        }
+
+        activityIndicator.startAnimating()
+        queue.async(execute: workItem)
+
+        workItem.notify(queue: .main) {
+            self.passwordTextField.isSecureTextEntry = false
+            self.activityIndicator.stopAnimating()
+        }
     }
 
     private func customizeView() {
@@ -186,13 +225,22 @@ final class LogInViewController: UIViewController {
             filterOutButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             filterOutButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
+
+        passwordTextField.addSubview(activityIndicator)
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: passwordTextField.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: passwordTextField.centerYAnchor)
+        ])
     }
+
 }
 
 //MARK: - Extensions
 
 extension LogInViewController: UITextFieldDelegate {
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
     }
+
 }
