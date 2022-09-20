@@ -7,8 +7,10 @@
 
 import UIKit
 
-class LogInViewController: UIViewController {
+final class LogInViewController: UIViewController {
+
     //MARK: - Properties
+
     private let notificationCenter = NotificationCenter.default
 
     private let scrollView: UIScrollView =  {
@@ -84,7 +86,17 @@ class LogInViewController: UIViewController {
         return button
     }()
 
+    private lazy var filterOutButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Filter out", for: .normal)
+        button.configuration = .gray()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(filterOut), for: .touchUpInside)
+        return button
+    }()
+
     //MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         customizeView()
@@ -103,24 +115,33 @@ class LogInViewController: UIViewController {
         notificationCenter.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
 
     }
+
     //MARK: - Methods
-    @objc private func keyboardShow(notification: NSNotification) {
+
+    @objc
+    private func keyboardShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollView.contentInset.bottom = keyboardSize.height
             scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
         }
     }
 
-    @objc private func keyboardHide() {
+    @objc
+    private func keyboardHide() {
         scrollView.contentInset = .zero
         scrollView.verticalScrollIndicatorInsets = .zero
     }
 
-    @objc func showProfile() {
+    @objc
+    func showProfile() {
         let profileViewController = ProfileViewController()
         navigationController?.pushViewController(profileViewController, animated: true)
     }
 
+    @objc
+    func filterOut() {
+        //MARK: TO DO
+    }
 
     private func customizeView() {
         view.backgroundColor = .white
@@ -130,7 +151,7 @@ class LogInViewController: UIViewController {
     private func layout() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        [logoImage, stackView, logInButton].forEach { contentView.addSubview($0) }
+        [logoImage, stackView, logInButton, filterOutButton].forEach { contentView.addSubview($0) }
         [logTextField, passwordTextField].forEach { stackView.addArrangedSubview($0) }
 
         NSLayoutConstraint.activate([
@@ -159,12 +180,17 @@ class LogInViewController: UIViewController {
             logInButton.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             logInButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
             logInButton.heightAnchor.constraint(equalToConstant: 50),
-            logInButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+
+            filterOutButton.topAnchor.constraint(equalTo: logInButton.bottomAnchor, constant: 16),
+            filterOutButton.heightAnchor.constraint(equalToConstant: 48),
+            filterOutButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            filterOutButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
 }
 
 //MARK: - Extensions
+
 extension LogInViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
