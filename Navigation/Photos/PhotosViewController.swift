@@ -54,12 +54,13 @@ private extension PhotosViewController {
     func configurePhotos() {
         guard let photos = photosModel else { return }
 
+        let start = DispatchTime.now()
+
         imageProcessor.processImagesOnThread(
             sourceImages: photos,
             filter: .chrome,
-            qos: .userInteractive
+            qos: .background
         ) { cgImages in
-            let start = DispatchTime.now()
 
             cgImages.forEach { cgImage in
                 self.images.append(UIImage(cgImage: cgImage!))
