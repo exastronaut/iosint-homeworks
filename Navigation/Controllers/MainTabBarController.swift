@@ -9,18 +9,26 @@ import UIKit
 
 class MainTabBarController: UITabBarController {
 
+    private let registrationService = RegistrationService()
+    private let userDefaultsService = UserDefaultsService()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabBar()
     }
 
     private func setupTabBar() {
-        let feedViewController = createNavigationController(viewController: FeedViewController(model: FeedModel()),
-                                                            itemName: "Feed",
-                                                            itemImage: "house")
-        let logInViewController = createNavigationController(viewController: LogInViewController(),
-                                                             itemName: "Profile",
-                                                             itemImage: "person")
+        let feedViewController = createNavigationController(
+            viewController: FeedViewController(model: FeedModel()),
+            itemName: "Feed",
+            itemImage: "house"
+        )
+        let logInViewController = createNavigationController(
+            viewController: LogInViewController(registrationService: registrationService,
+                                                userDefaultsService: userDefaultsService),
+            itemName: "Profile",
+            itemImage: "person"
+        )
 
         viewControllers = [feedViewController, logInViewController]
     }

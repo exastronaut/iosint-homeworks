@@ -7,9 +7,13 @@
 
 import UIKit
 
-class LogInViewController: UIViewController {
+final class LogInViewController: UIViewController {
+
     //MARK: - Properties
+
     private let notificationCenter = NotificationCenter.default
+    private let userDefaultsService: UserDefaultsServiceProtocol
+    private let registrationService: RegistrationServiceProtocol
 
     private let scrollView: UIScrollView =  {
         let scrollView = UIScrollView()
@@ -84,17 +88,44 @@ class LogInViewController: UIViewController {
         return button
     }()
 
+    //MARK: - Initialization
+
+    init(
+        registrationService: RegistrationServiceProtocol,
+        userDefaultsService: UserDefaultsServiceProtocol
+    ) {
+        self.registrationService = registrationService
+        self.userDefaultsService = userDefaultsService
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     //MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
         customizeView()
         layout()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        notificationCenter.addObserver(self, selector: #selector(keyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(keyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(keyboardShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(keyboardHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -104,21 +135,31 @@ class LogInViewController: UIViewController {
 
     }
     //MARK: - Methods
+
     @objc private func keyboardShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey]
+                               as? NSValue)?.cgRectValue {
             scrollView.contentInset.bottom = keyboardSize.height
-            scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+            scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0,
+                                                                    left: 0,
+                                                                    bottom: keyboardSize.height,
+                                                                    right: 0)
         }
     }
 
-    @objc private func keyboardHide() {
+    @objc
+    private func keyboardHide() {
         scrollView.contentInset = .zero
         scrollView.verticalScrollIndicatorInsets = .zero
     }
 
-    @objc func showProfile() {
-        let profileViewController = ProfileViewController()
-        navigationController?.pushViewController(profileViewController, animated: true)
+    @objc
+    func showProfile() {
+        guard let login = logTextField.text,
+              let password = passwordTextField.text
+        else { return }
+
+        getUserToken(login: login, password: password)
     }
 
 
@@ -162,11 +203,40 @@ class LogInViewController: UIViewController {
             logInButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
+    
 }
 
-//MARK: - Extensions
+private extension LogInViewController {
+
+    func getUserToken(login: String, password: String) {
+        registrationService.getToken(login: login, password: password) { [weak self] result in
+            guard let self = self,
+                  let token = result
+            else {
+                self?.showAlert()
+                return
+            }
+
+            print("первый токен \(token)")
+            self.userDefaultsService.saveUserToken(token)
+
+            let refreshTokenService = RefreshTokenService()
+            let profileViewController = ProfileViewController(refreshTokenService: refreshTokenService,
+                                                              userDefaultsService: self.userDefaultsService)
+            self.navigationController?.pushViewController(profileViewController, animated: true)
+        }
+    }
+
+}
+
+//MARK: - UITextFieldDelegate
+
 extension LogInViewController: UITextFieldDelegate {
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
     }
+
+
+
 }
