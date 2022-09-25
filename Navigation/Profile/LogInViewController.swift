@@ -7,8 +7,10 @@
 
 import UIKit
 
-class LogInViewController: UIViewController {
+final class LogInViewController: UIViewController {
+
     //MARK: - Properties
+
     private let notificationCenter = NotificationCenter.default
 
     private let scrollView: UIScrollView =  {
@@ -65,7 +67,6 @@ class LogInViewController: UIViewController {
         textField.layer.borderWidth = 0.5
         textField.ident(size: 10)
         textField.delegate = self
-        textField.isSecureTextEntry = true
         return textField
     }()
 
@@ -84,43 +85,102 @@ class LogInViewController: UIViewController {
         return button
     }()
 
+    private lazy var filterOutButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Filter out", for: .normal)
+        button.configuration = .gray()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(filterOut), for: .touchUpInside)
+        return button
+    }()
+
+    private let activityIndicator : UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.hidesWhenStopped = true
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+
     //MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
         customizeView()
         layout()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        notificationCenter.addObserver(self, selector: #selector(keyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(keyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(keyboardShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil)
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(keyboardHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+
         notificationCenter.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         notificationCenter.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-
     }
+
     //MARK: - Methods
-    @objc private func keyboardShow(notification: NSNotification) {
+
+    @objc
+    private func keyboardShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollView.contentInset.bottom = keyboardSize.height
-            scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+            scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(
+                top: 0,
+                left: 0,
+                bottom: keyboardSize.height,
+                right: 0
+            )
         }
     }
 
-    @objc private func keyboardHide() {
+    @objc
+    private func keyboardHide() {
         scrollView.contentInset = .zero
         scrollView.verticalScrollIndicatorInsets = .zero
     }
 
-    @objc func showProfile() {
+    @objc
+    private func showProfile() {
         let profileViewController = ProfileViewController()
         navigationController?.pushViewController(profileViewController, animated: true)
     }
 
+    @objc
+    private func filterOut() {
+        let brutForce = BrutForceService()
+        let generatePassword = brutForce.generatePassword(length: 4)
+
+        passwordTextField.isSecureTextEntry = true
+        passwordTextField.text = generatePassword
+
+        let queue = DispatchQueue(label: "ru.exastronaut.concurrent-queue", attributes: .concurrent)
+        let workItem = DispatchWorkItem {
+            brutForce.bruteForce(passwordToUnlock: generatePassword)
+        }
+
+        activityIndicator.startAnimating()
+        queue.async(execute: workItem)
+
+        workItem.notify(queue: .main) {
+            self.passwordTextField.isSecureTextEntry = false
+            self.activityIndicator.stopAnimating()
+        }
+    }
 
     private func customizeView() {
         view.backgroundColor = .white
@@ -130,7 +190,7 @@ class LogInViewController: UIViewController {
     private func layout() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        [logoImage, stackView, logInButton].forEach { contentView.addSubview($0) }
+        [logoImage, stackView, logInButton, filterOutButton].forEach { contentView.addSubview($0) }
         [logTextField, passwordTextField].forEach { stackView.addArrangedSubview($0) }
 
         NSLayoutConstraint.activate([
@@ -159,14 +219,28 @@ class LogInViewController: UIViewController {
             logInButton.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             logInButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
             logInButton.heightAnchor.constraint(equalToConstant: 50),
-            logInButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+
+            filterOutButton.topAnchor.constraint(equalTo: logInButton.bottomAnchor, constant: 16),
+            filterOutButton.heightAnchor.constraint(equalToConstant: 48),
+            filterOutButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            filterOutButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+
+        passwordTextField.addSubview(activityIndicator)
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: passwordTextField.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: passwordTextField.centerYAnchor)
         ])
     }
+
 }
 
 //MARK: - Extensions
+
 extension LogInViewController: UITextFieldDelegate {
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
     }
+
 }
