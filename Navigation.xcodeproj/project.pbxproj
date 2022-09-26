@@ -23,6 +23,11 @@
 		C7A62C2327D6139A000CF42B /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A62C2227D6139A000CF42B /* InfoViewController.swift */; };
 		C7A62C2527D6890E000CF42B /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A62C2427D6890E000CF42B /* Post.swift */; };
 		C7B9649727DF4958003AD7C1 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B9649627DF4958003AD7C1 /* ProfileHeaderView.swift */; };
+		C7D593D128E058010061E079 /* RegistraionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D593D028E058010061E079 /* RegistraionService.swift */; };
+		C7D593D328E05BA60061E079 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D593D228E05BA60061E079 /* String+Extension.swift */; };
+		C7D593D528E06C580061E079 /* RefreshTokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D593D428E06C580061E079 /* RefreshTokenService.swift */; };
+		C7D593D728E06E540061E079 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D593D628E06E540061E079 /* UIViewController+Extension.swift */; };
+		C7D593D928E081CC0061E079 /* UserDefaultsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D593D828E081CC0061E079 /* UserDefaultsService.swift */; };
 		C7E32E3A2809D9FE007D4481 /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E32E392809D9FE007D4481 /* PostModel.swift */; };
 		C7E32E3C280AA8F0007D4481 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E32E3B280AA8F0007D4481 /* PostTableViewCell.swift */; };
 		C7E32E3E280ABAF4007D4481 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E32E3D280ABAF4007D4481 /* UIView+Extension.swift */; };
@@ -52,6 +57,11 @@
 		C7A62C2227D6139A000CF42B /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		C7A62C2427D6890E000CF42B /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		C7B9649627DF4958003AD7C1 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
+		C7D593D028E058010061E079 /* RegistraionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistraionService.swift; sourceTree = "<group>"; };
+		C7D593D228E05BA60061E079 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		C7D593D428E06C580061E079 /* RefreshTokenService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshTokenService.swift; sourceTree = "<group>"; };
+		C7D593D628E06E540061E079 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		C7D593D828E081CC0061E079 /* UserDefaultsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsService.swift; sourceTree = "<group>"; };
 		C7E32E392809D9FE007D4481 /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
 		C7E32E3B280AA8F0007D4481 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		C7E32E3D280ABAF4007D4481 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
@@ -89,6 +99,8 @@
 				C759180427F4E5CC004DB176 /* UITextField+Extension.swift */,
 				C759180827F6F623004DB176 /* UIImage+Extension.swift */,
 				C7E32E3D280ABAF4007D4481 /* UIView+Extension.swift */,
+				C7D593D228E05BA60061E079 /* String+Extension.swift */,
+				C7D593D628E06E540061E079 /* UIViewController+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -112,6 +124,7 @@
 		C7A62C0427D244A0000CF42B /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				C7D593CF28E057EB0061E079 /* Service */,
 				C7A62C0527D244A0000CF42B /* AppDelegate.swift */,
 				C73DB28A287B5A7600A8890B /* Design system */,
 				C7EC12B2287E058300A8E4B8 /* Feed screen */,
@@ -148,6 +161,16 @@
 				C759180227F39CB2004DB176 /* LogInViewController.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		C7D593CF28E057EB0061E079 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				C7D593D028E058010061E079 /* RegistraionService.swift */,
+				C7D593D428E06C580061E079 /* RefreshTokenService.swift */,
+				C7D593D828E081CC0061E079 /* UserDefaultsService.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 		C7E32E382809D9DB007D4481 /* Model */ = {
@@ -279,8 +302,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7D593D128E058010061E079 /* RegistraionService.swift in Sources */,
 				C759180327F39CB2004DB176 /* LogInViewController.swift in Sources */,
 				C7A62C1E27D24B39000CF42B /* PostViewController.swift in Sources */,
+				C7D593D528E06C580061E079 /* RefreshTokenService.swift in Sources */,
 				C7A62C1C27D24B1C000CF42B /* ProfileViewController.swift in Sources */,
 				C759180927F6F623004DB176 /* UIImage+Extension.swift in Sources */,
 				C73DB28C287B5AB700A8890B /* CustomButton.swift in Sources */,
@@ -291,9 +316,12 @@
 				C7A62C1A27D24B03000CF42B /* FeedViewController.swift in Sources */,
 				C7E32E3C280AA8F0007D4481 /* PostTableViewCell.swift in Sources */,
 				C7FA3331281E937E00F708C2 /* PhotosViewController.swift in Sources */,
+				C7D593D728E06E540061E079 /* UIViewController+Extension.swift in Sources */,
+				C7D593D928E081CC0061E079 /* UserDefaultsService.swift in Sources */,
 				C759180527F4E5CC004DB176 /* UITextField+Extension.swift in Sources */,
 				C7A62C2327D6139A000CF42B /* InfoViewController.swift in Sources */,
 				C7EC12B1287E040C00A8E4B8 /* CustomTextField+Button.swift in Sources */,
+				C7D593D328E05BA60061E079 /* String+Extension.swift in Sources */,
 				C7A62C2527D6890E000CF42B /* Post.swift in Sources */,
 				C7A62C0627D244A0000CF42B /* AppDelegate.swift in Sources */,
 				C7E32E3E280ABAF4007D4481 /* UIView+Extension.swift in Sources */,
