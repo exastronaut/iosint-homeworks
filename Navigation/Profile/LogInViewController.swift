@@ -114,12 +114,14 @@ final class LogInViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         notificationCenter.addObserver(
             self,
             selector: #selector(keyboardShow),
             name: UIResponder.keyboardWillShowNotification,
             object: nil
         )
+        
         notificationCenter.addObserver(
             self,
             selector: #selector(keyboardHide),
@@ -210,21 +212,21 @@ private extension LogInViewController {
 
     func getUserToken(login: String, password: String) {
         registrationService.getToken(login: login, password: password) { [weak self] result in
-            guard let self = self,
-                  let token = result
-            else {
-                self?.showAlert()
-                return
+            switch result {
+            case .success(let token):
+                self?.userDefaultsService.saveUserToken(token)
+                self?.goToNextScreen()
+            case.failure:
+                self?.showAlert(for: .unautorized)
             }
-
-            print("первый токен \(token)")
-            self.userDefaultsService.saveUserToken(token)
-
-            let refreshTokenService = RefreshTokenService()
-            let profileViewController = ProfileViewController(refreshTokenService: refreshTokenService,
-                                                              userDefaultsService: self.userDefaultsService)
-            self.navigationController?.pushViewController(profileViewController, animated: true)
         }
+    }
+
+    func goToNextScreen() {
+        let refreshTokenService = RefreshTokenService()
+        let profileViewController = ProfileViewController(refreshTokenService: refreshTokenService,
+                                                          userDefaultsService: userDefaultsService)
+        navigationController?.pushViewController(profileViewController, animated: true)
     }
 
 }
