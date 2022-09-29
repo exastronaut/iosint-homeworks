@@ -10,7 +10,7 @@ import Foundation
 protocol UserDefaultsServiceProtocol {
 
     func saveUserToken(_ token: String)
-    func getUserToken() -> String?
+    func getUserToken() throws -> String
 
 }
 struct UserDefaultsService {
@@ -27,8 +27,12 @@ extension UserDefaultsService: UserDefaultsServiceProtocol {
         UserDefaults.standard.set(token, forKey: tokenKey)
     }
 
-    func getUserToken() -> String? {
-        UserDefaults.standard.value(forKey: tokenKey) as? String
+    func getUserToken() throws -> String {
+        if let token = UserDefaults.standard.value(forKey: tokenKey) as? String {
+            return token
+        } else {
+            throw AppError.notFound
+        }
     }
 
 }

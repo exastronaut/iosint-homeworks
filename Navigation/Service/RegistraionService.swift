@@ -7,9 +7,9 @@
 
 protocol RegistrationServiceProtocol {
 
-    typealias TokenResponse = (String?) -> Void
+    typealias TokenResponse = (Result<String, AppError>) -> Void
 
-    func getToken(login: String, password: String, completion: @escaping TokenResponse)
+    func getToken(login: String, password: String, completion: @escaping TokenResponse) 
 
 }
 
@@ -17,9 +17,9 @@ struct RegistrationService: RegistrationServiceProtocol  {
 
     func getToken(login: String, password: String, completion: @escaping TokenResponse) {
         if !login.isEmpty && !password.isEmpty {
-            completion(.generateToken())
+            completion(.success(.generateToken()))
         } else {
-            completion(nil)
+            completion(.failure(.unautorized))
         }
     }
 

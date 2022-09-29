@@ -9,6 +9,7 @@ import UIKit
 class ProfileHeaderView: UIView {
 
     //MARK: - Properties
+
     private var statusText: String?
 
     let avatarImageView: UIImageView = {
@@ -96,6 +97,7 @@ class ProfileHeaderView: UIView {
     var trailingAvatarImageView = NSLayoutConstraint()
 
     //MARK: - Lifecycle
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         layout()
@@ -106,6 +108,7 @@ class ProfileHeaderView: UIView {
     }
     
     //MARK: - Methods
+
     @objc func buttonPressed() {
         guard let text = statusTextField.text, !text.isEmpty else {
             statusLabel.text = "Waiting for something..."
@@ -162,6 +165,7 @@ class ProfileHeaderView: UIView {
 }
 
 //MARK: - UITextFieldDelegate
+
 extension ProfileHeaderView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         endEditing(true)

@@ -28,6 +28,7 @@
 		C7D593D528E06C580061E079 /* RefreshTokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D593D428E06C580061E079 /* RefreshTokenService.swift */; };
 		C7D593D728E06E540061E079 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D593D628E06E540061E079 /* UIViewController+Extension.swift */; };
 		C7D593D928E081CC0061E079 /* UserDefaultsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D593D828E081CC0061E079 /* UserDefaultsService.swift */; };
+		C7D593E128E238E40061E079 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D593E028E238E40061E079 /* AppError.swift */; };
 		C7E32E3A2809D9FE007D4481 /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E32E392809D9FE007D4481 /* PostModel.swift */; };
 		C7E32E3C280AA8F0007D4481 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E32E3B280AA8F0007D4481 /* PostTableViewCell.swift */; };
 		C7E32E3E280ABAF4007D4481 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E32E3D280ABAF4007D4481 /* UIView+Extension.swift */; };
@@ -62,6 +63,7 @@
 		C7D593D428E06C580061E079 /* RefreshTokenService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshTokenService.swift; sourceTree = "<group>"; };
 		C7D593D628E06E540061E079 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		C7D593D828E081CC0061E079 /* UserDefaultsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsService.swift; sourceTree = "<group>"; };
+		C7D593E028E238E40061E079 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		C7E32E392809D9FE007D4481 /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
 		C7E32E3B280AA8F0007D4481 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		C7E32E3D280ABAF4007D4481 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
@@ -124,8 +126,9 @@
 		C7A62C0427D244A0000CF42B /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
-				C7D593CF28E057EB0061E079 /* Service */,
 				C7A62C0527D244A0000CF42B /* AppDelegate.swift */,
+				C7D593DF28E238CF0061E079 /* Common */,
+				C7D593CF28E057EB0061E079 /* Service */,
 				C73DB28A287B5A7600A8890B /* Design system */,
 				C7EC12B2287E058300A8E4B8 /* Feed screen */,
 				C759180A27F702E9004DB176 /* Extension */,
@@ -171,6 +174,14 @@
 				C7D593D828E081CC0061E079 /* UserDefaultsService.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		C7D593DF28E238CF0061E079 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				C7D593E028E238E40061E079 /* AppError.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		C7E32E382809D9DB007D4481 /* Model */ = {
@@ -322,6 +333,7 @@
 				C7A62C2327D6139A000CF42B /* InfoViewController.swift in Sources */,
 				C7EC12B1287E040C00A8E4B8 /* CustomTextField+Button.swift in Sources */,
 				C7D593D328E05BA60061E079 /* String+Extension.swift in Sources */,
+				C7D593E128E238E40061E079 /* AppError.swift in Sources */,
 				C7A62C2527D6890E000CF42B /* Post.swift in Sources */,
 				C7A62C0627D244A0000CF42B /* AppDelegate.swift in Sources */,
 				C7E32E3E280ABAF4007D4481 /* UIView+Extension.swift in Sources */,

@@ -88,15 +88,15 @@ private extension ProfileViewController {
     func createTimer() {
         let queue = DispatchQueue(label: "ru.exastronaut.concurrent-queue", attributes: .concurrent)
 
-        let workItem = DispatchWorkItem { [self] in
+        let workItem = DispatchWorkItem {
             self.timer = Timer.scheduledTimer(timeInterval: 300,
-                                         target: self,
-                                         selector: #selector(refreshToken),
-                                         userInfo: nil,
-                                         repeats: true)
+                                              target: self,
+                                              selector: #selector(self.refreshToken),
+                                              userInfo: nil,
+                                              repeats: true)
             self.timer?.tolerance = 0.2
 
-            guard let timer = timer else {
+            guard let timer = self.timer else {
                 self.disableTimer()
                 return
             }
@@ -110,19 +110,26 @@ private extension ProfileViewController {
 
     @objc
     func refreshToken() {
-        let token = userDefaultsService.getUserToken()
-
-        refreshTokenService.refreshToken(oldToken: token) {[weak self] result in
-            guard let self = self,
-                  let token = result
-            else {
-                DispatchQueue.main.async {
-                    self?.showAlert()
-                }
-                return
+        do {
+            let token = try userDefaultsService.getUserToken()
+            getNewToken(token)
+        } catch {
+            DispatchQueue.main.async {
+                self.showAlert(for: .notFound)
             }
+        }
+    }
 
-            self.userDefaultsService.saveUserToken(token)
+    func getNewToken(_ token: String) {
+        refreshTokenService.refreshToken(oldToken: token) { [weak self] result in
+            switch result {
+            case .success(let token):
+                self?.userDefaultsService.saveUserToken(token)
+            case .failure:
+                DispatchQueue.main.async {
+                    self?.showAlert(for: .noConnection)
+                }
+            }
         }
     }
 

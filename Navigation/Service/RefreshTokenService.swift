@@ -7,7 +7,7 @@
 
 protocol RefreshTokenServiceProtocol {
 
-    typealias TokenResponse = (String?) -> Void
+    typealias TokenResponse = (Result<String, AppError>) -> Void
 
     func refreshToken(oldToken: String?, completion: @escaping TokenResponse)
 
@@ -17,9 +17,9 @@ struct RefreshTokenService: RefreshTokenServiceProtocol  {
 
     func refreshToken(oldToken: String?, completion: @escaping TokenResponse) {
         if oldToken != nil {
-            completion(.generateToken())
+            completion(.success(.generateToken()))
         } else {
-            completion(nil)
+            completion(.failure(.notFound))
         }
     }
 
